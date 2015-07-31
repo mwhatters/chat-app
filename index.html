@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
   <head>
-    <title>Socket.IO chat</title>
+    <title>shit chat</title>
 
 		<style>
 			* { margin: 0; padding: 0; box-sizing: border-box; }
@@ -13,7 +13,7 @@
 			#messages li { padding: 5px 10px; }
 			#messages li:nth-child(odd) { background: #eee; }
 			img { width: 40%; height: 400px; right: 0; top: 0; position: fixed;}
-			h1 { position: fixed; right: 6.5em; top: 6em;}
+			h1, h2, h3 { position: fixed; right: 6.5em; top: 6em;}
 		</style>
 
 
@@ -25,6 +25,7 @@
     <ul id="messages"></ul>
    	<img src="https://upload.wikimedia.org/wikipedia/commons/4/42/Love_Heart_SVG.svg" class="sad">
    	<h1>Shit Chat</h1>
+   	<h2>Users Online: <span class="u-count">0</span></h2>
 
     <form action="">
       <textarea id="m" autocomplete="off" cols="10" rows="10" placeholder="message" required/></textarea>
@@ -41,6 +42,7 @@
 	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
 	<script>
 		var socket = io();
+
 		$('form').submit(function(e){
 			e.preventDefault();
 			sendMessage();
@@ -56,6 +58,11 @@
 		socket.on('chat message', function(msg){
 			console.log(msg)
 			$('#messages').append($('<li>').html(bold(msg.username) + ": " + msg.message));
+		})
+
+		socket.on('user_count', function(user_count){
+			console.log(user_count)
+			$('.u-count').text(user_count)
 		})
 
 		function bold(text) {

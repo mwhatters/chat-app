@@ -2,15 +2,22 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 5000
+var user_count = 0
+
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });
 
 io.on('connection', function(socket){
-  console.log('a user connected');
+		user_count++;
+		// io.sockets.emit -- all usres
+		io.emit('user_count', user_count)
+
   socket.on('disconnect', function(){
-    console.log('user disconnected');
+  	user_count--;
+		io.emit('user_count', user_count)
+
   });
 });
 
@@ -21,5 +28,10 @@ io.on('connection', function(socket){
 });
 
 http.listen(port, function(){
-  console.log('listening on *:' + port);
+  console.log('listening on localhost:' + port);
 });
+
+
+function updateUserCount(num) {
+
+}
